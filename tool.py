@@ -4,38 +4,34 @@ from tkinter import ttk
 import psutil
 
 def update_stats():
-    # 1. RAM-Daten auslesen
-    mem = psutil.virtual_memory()
-    ram_total = mem.total / (1024**3)
-    ram_avail = mem.available / (1024**3)
-    ram_used_pct = mem.percent
-    
-    # 2. CPU-Daten auslesen (ohne Blockieren/Intervall, um die GUI flüssig zu halten)
-    cpu_pct = psutil.cpu_percent()
+     # 1. RAM-Daten auslesen
+     mem = psutil.virtual_memory()
+     ram_total = mem.total / (1024**3)
+     ram_avail = mem.available / (1024**3)
+     ram_used_pct = mem.percent
+     
+     # 2. CPU-Daten auslesen (ohne Blockieren/Intervall, um die GUI flüssig zu halten)
+     cpu_pct = psutil.cpu_percent()
 
-    # 3. GUI-Labels und Fortschrittsbalken aktualisieren
-    lbl_cpu.config(text=f"CPU-Auslastung: {cpu_pct}%")
-    progress_cpu["value"] = cpu_pct
+     # 3. GUI-Labels und Fortschrittsbalken aktualisieren
+     lbl_cpu.config(text=f"CPU-Auslastung: {cpu_pct}%")
+     progress_cpu["value"] = cpu_pct
 
-    lbl_ram.config(text=f"RAM: {ram_avail:.2f} GB frei von {ram_total:.2f} GB")
-    progress_ram["value"] = ram_used_pct
+     lbl_ram.config(text=f"RAM: {ram_avail:.2f} GB frei von {ram_total:.2f} GB")
+     progress_ram["value"] = ram_used_pct
 
-    # 4. Diese Funktion nach 1000 Millisekunden (1 Sekunde) erneut aufrufen
-    root.after(1000, update_stats)
+     # 4. Diese Funktion nach 1000 Millisekunden (1 Sekunde) erneut aufrufen
+     root.after(1000, update_stats)
 
 # --- GUI Struktur aufbauen ---
 root = tk.Tk()
 root.title("XFCE System Monitor")
 
-# Ersetzen Sie den alten Icon-Block durch diesen:
-try:
-    # Versucht, das offizielle System-Icon für "System-Monitor" unter XFCE zu laden
-    root.iconname("utilities-system-monitor")
-    # Alternativ über X11-Attribute (sehr robust unter XFCE)
-    root.wm_iconbitmap(bitmap="@/usr/share/icons/fbxkb/images/de.xbm")
-except Exception:
-    # Falls das System-Icon fehlt, läuft das Programm ohne Absturz weiter
-    pass
+# Fenster-Icon setzen
+icon_path = Path(__file__).parent / "icon.png"
+if icon_path.exists():
+    root_icon = tk.PhotoImage(file=icon_path)
+    root.iconphoto(True, root_icon)
 
 root.geometry("350x200")
 root.resizable(False, False)
