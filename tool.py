@@ -1,3 +1,4 @@
+from pathlib import Path
 import tkinter as tk
 from tkinter import ttk
 import psutil
@@ -25,6 +26,14 @@ def update_stats():
 # --- GUI Struktur aufbauen ---
 root = tk.Tk()
 root.title("XFCE System Monitor")
+
+# Suchen des Icons relativ zum Skriptpfad
+skript_ordner = Path(__file__).parent
+icon_pfad = skript_ordner / "assets" / "icon.png"
+if icon_pfad.exists():
+    img = tk.PhotoImage(file=icon_pfad)
+    root.iconphoto(False, img)
+
 root.geometry("350x200")
 root.resizable(False, False)
 
