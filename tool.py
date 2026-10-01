@@ -2,6 +2,7 @@ from pathlib import Path
 import tkinter as tk
 from tkinter import ttk
 import psutil
+import subprocess
 
 def update_stats():
      # 1. RAM-Daten auslesen
@@ -23,6 +24,11 @@ def update_stats():
      # 4. Diese Funktion nach 1000 Millisekunden (1 Sekunde) erneut aufrufen
      root.after(1000, update_stats)
 
+def open_mousepad():
+     """Öffnet tool.py mit Mousepad"""
+     tool_path = Path(__file__).absolute()
+     subprocess.Popen(["mousepad", str(tool_path)])
+
 # --- GUI Struktur aufbauen ---
 root = tk.Tk()
 root.title("XFCE System Monitor")
@@ -33,7 +39,7 @@ if icon_path.exists():
     root_icon = tk.PhotoImage(file=icon_path)
     root.iconphoto(True, root_icon)
 
-root.geometry("350x200")
+root.geometry("350x250")
 root.resizable(False, False)
 
 # Stil für ein modernes XFCE-Aussehen festlegen
@@ -54,7 +60,11 @@ progress_cpu.pack(fill="x", pady=(0, 20))
 lbl_ram = ttk.Label(frame, text="RAM-Auslastung: 0%", font=("Helvetica", 11))
 lbl_ram.pack(anchor="w", pady=(0, 5))
 progress_ram = ttk.Progressbar(frame, orient="horizontal", length=300, mode="determinate")
-progress_ram.pack(fill="x", pady=(0, 10))
+progress_ram.pack(fill="x", pady=(0, 20))
+
+# Button für Mousepad
+btn_edit = ttk.Button(frame, text="Code mit Mousepad öffnen", command=open_mousepad)
+btn_edit.pack(fill="x", pady=(10, 0))
 
 # Erste Aktualisierung starten
 update_stats()
