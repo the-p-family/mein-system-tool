@@ -27,12 +27,15 @@ def update_stats():
 root = tk.Tk()
 root.title("XFCE System Monitor")
 
-# Suchen des Icons relativ zum Skriptpfad
-skript_ordner = Path(__file__).parent
-icon_pfad = skript_ordner / "assets" / "icon.png"
-if icon_pfad.exists():
-    img = tk.PhotoImage(file=icon_pfad)
-    root.iconphoto(False, img)
+# Ersetzen Sie den alten Icon-Block durch diesen:
+try:
+    # Versucht, das offizielle System-Icon für "System-Monitor" unter XFCE zu laden
+    root.iconname("utilities-system-monitor")
+    # Alternativ über X11-Attribute (sehr robust unter XFCE)
+    root.wm_iconbitmap(bitmap="@/usr/share/icons/fbxkb/images/de.xbm")
+except Exception:
+    # Falls das System-Icon fehlt, läuft das Programm ohne Absturz weiter
+    pass
 
 root.geometry("350x200")
 root.resizable(False, False)
